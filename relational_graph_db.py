@@ -1,6 +1,10 @@
 from pymongo import MongoClient
 import numpy as np
 
+import urllib.parse
+import urllib.request
+url = 'https://www.uniprot.org/uploadlists/'
+
 def read_csv(file):
     Daten = np.loadtxt(file,dtype=str, delimiter=",")
     (Anz_Zeilen, Anz_Spalten) = Daten.shape
@@ -12,11 +16,26 @@ def read_csv(file):
     all_prots = sorted(all_prots)
     return (Daten, all_prots)
 
-#prot_name: string
 def create_protein_node(bucket, prot_name):
-    prot={"Name": prot_name}
-    prots=bucket.proteins
+#fetch uniprot meta-data
+#atm only add ENSEMB_ID
+    params = {
+    'from': 'ACC + ID',
+    'to': 'ENSEMBL_ID',
+    'format': 'tab',
+    'query': prot_name
+    }
+    data = urllib.parse.urlencode(params)
+    data = data.encode('utf-8')
+    req = urllib.request.Request(url, data)
+    with urllib.request.urlopen(req) as f:
+        response = f.read()
+    print(response.decode('utf-8'))
+#insert into database
+    prot = {"Name": prot_name, "ESEMBL_ID": response.decode('utf-8')}
+    prots = bucket.proteins
     prot_id = prots.insert_one(prot).inserted_id
+
     #return print(prot)
 
 def delete_all_proteins(bucket):
@@ -28,7 +47,7 @@ if __name__ == '__main__':
     client = MongoClient('mongodb://localhost:27017/')
     db = client['interactome-test']
     ppi = db['ppi-test']
+    ppi.proteins.delete_many({})
 
-    create_protein_node(ppi, 'AGT')
-    create_protein_node(ppi, 'TAA')
-    print(ppi.proteins.find())
+    create_protein_node(ppi, 'P40925')
+    print(ppi.proteins.count_documents({}))
