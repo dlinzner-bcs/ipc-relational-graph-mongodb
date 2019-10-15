@@ -1,9 +1,9 @@
 from pymongo import MongoClient
 import interface_mongo as im
+#from interface_mongo import create_protein_node as im
 import matplotlib.pyplot as plt
-
+import numpy as np
 if __name__ == '__main__':
-
     client = MongoClient('mongodb://localhost:27017/')
     db = client['interactome-test']
     ppi = db['ppi-test']
@@ -19,3 +19,6 @@ if __name__ == '__main__':
 
     plt.matshow(A)
     plt.show()
+
+    np.save('Interactions_adj',A)
+    print(len(A))

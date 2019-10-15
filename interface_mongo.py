@@ -1,4 +1,3 @@
-
 import numpy as np
 
 import urllib.parse
@@ -45,7 +44,7 @@ def create_protein_node(bucket, prot_name,id_type,arg):
     prots = bucket.proteins
     prot_id = prots.insert_one(prot).inserted_id
 
-    #return print(prot)
+    return print(prot)
 
 def delete_all_proteins(bucket):
     bucket.proteins.delete_many({})
@@ -53,7 +52,7 @@ def delete_all_proteins(bucket):
 def create_protein_nodes(bucket, all_prots,id_type,arg):
     Anz_Prots = len(all_prots)
     Counter = 1
-    for i in range(Counter, Anz_Prots+1):				#2. Element ist in range nicht enthalten (also z.B. list(range(1,3))----> [1,2])
+    for i in range(Counter, Anz_Prots+1):				
 	    create_protein_node(bucket,all_prots[i-1],id_type,arg)
 	    Counter += 1
 

@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/Users/dominik/PycharmProjects/untitled1/venv"
+VIRTUAL_ENV="/Users/dominik/Git/relational_graph_db/ipc_relational_graph_mongodb/venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

@@ -29,7 +29,7 @@ end
 # unset irrelevant variables
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/Users/dominik/PycharmProjects/untitled1/venv"
+set -gx VIRTUAL_ENV "/Users/dominik/Git/relational_graph_db/ipc_relational_graph_mongodb/venv"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH
