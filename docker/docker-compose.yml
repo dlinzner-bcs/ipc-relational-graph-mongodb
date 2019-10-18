@@ -19,4 +19,4 @@ services:
     command: server /export
 # volumes:
 #   - db-data-volume:
-#   - cos-data-volume
+#   - cos-data-volume:
