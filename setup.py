@@ -21,9 +21,10 @@ setup(
     ),
     long_description=LONG_DESCRIPTION,
     long_description_content_type="text/markdown",
-    author='Dominik Linzer, Matteo Manica',
+    author='Dominik Linzer, Michael Schmidt, Matteo Manica',
     author_email=(
         'dominik.linzner@bcs.tu-darmstadt.de, '
+        'michael.schmidt@bcs.tu-darmstadt.de, '
         'drugilsberg@gmail.com'
     ),
     url='https://github.com/dlinzner-bcs/ipc_relational_graph_mongodb',
