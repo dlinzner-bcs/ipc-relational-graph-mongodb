@@ -48,3 +48,17 @@ docker-compose -f docker/docker-compose.yml down
 ```
 
 **NOTE:** the data in the containers are not persisted on a physical volume. In order to store data volumes should be configured an mounted.
+
+## ppi example
+
+After spawning the services:
+
+```sh
+docker-compose -f docker/docker-compose.yml up -d
+```
+
+Run:
+
+```sh
+python examples/ppi_example.py -i data/interactions.csv
+```
