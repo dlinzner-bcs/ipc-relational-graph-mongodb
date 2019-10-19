@@ -1,6 +1,8 @@
 """Abstract interface definition."""
 import numpy as np
 from scipy.sparse import coo_matrix
+from ..io import parse_edge_list
+from ..relations.relation import Relation
 
 
 class Interface:
@@ -18,6 +20,10 @@ class Interface:
         """Create entities."""
         raise NotImplementedError
 
+    def get_all_entities(self):
+        """Get all entities."""
+        raise NotImplementedError
+
     def delete_all_entities(self):
         """Delete all entities."""
         raise NotImplementedError
@@ -28,6 +34,10 @@ class Interface:
 
     def create_relations(self, relations):
         """Create relations."""
+        raise NotImplementedError
+
+    def get_all_relations(self):
+        """Get all relations."""
         raise NotImplementedError
 
     def delete_all_relations(self):
@@ -50,11 +60,12 @@ class Interface:
         """Get adjacency given relation and entity types."""
         sources, targets, weights = zip(
             *[
-                (entity_name, target_entity_name, weight)
-                for entity_name in entity_names for target_entity_name, weight
-                in self.get_entity_out_neighbors(
-                    entity_name, [relation_type], weight=weight
-                )
+                (entity_name, target_entity_name, a_weight)
+                for entity_name in entity_names
+                for (target_entity_name,
+                     a_weight) in self.get_entity_out_neighbors(
+                         entity_name, [relation_type], weight=weight
+                     )
             ]
         )
         connected_entities = list(set(sources) | set(targets))
@@ -83,3 +94,23 @@ class Interface:
             ),
             shape=(n, n)
         )
+
+    def from_edge_list_filepath(self, filepath, entity_class, relation_type):
+        """Insert entities and relations from filepath."""
+        df, names = parse_edge_list(filepath)
+        # construct protein to entity mapping
+        name_to_entity = {name: entity_class(name=name) for name in names}
+        # create them in the relational graph
+        self.create_entities(name_to_entity.values())
+        # construct relations
+        columns = df.columns
+        relations = [
+            Relation(
+                source=name_to_entity[source_name],
+                target=name_to_entity[target_name],
+                relation_type=relation_type
+            ) for source_name, target_name in
+            zip(df[columns[0]], df[columns[1]])
+        ]
+        # create them in the relational graph
+        self.create_relations(relations)

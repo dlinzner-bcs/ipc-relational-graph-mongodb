@@ -29,4 +29,4 @@ class Entity(KnowledgeUnit):
         parameters['name'] = self.name
         parameters['entity_type'] = self.entity_type
         validate(parameters, schema=ENTITY_SCHEMA)
-        super().__init__(parameters=parameters)
+        super().__init__(**parameters)

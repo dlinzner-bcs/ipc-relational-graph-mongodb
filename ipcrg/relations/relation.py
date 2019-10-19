@@ -30,10 +30,10 @@ class Relation(KnowledgeUnit):
         self.relation_type = relation_type
         self.weight = weight
         parameters = {
-            'source': self.source,
-            'target': self.target,
+            'source': self.source.to_dict(),
+            'target': self.target.to_dict(),
             'relation_type': self.relation_type,
             'weight': self.weight
         }
         validate(parameters, schema=RELATION_SCHEMA)
-        super().__init__(parameters=parameters)
+        super().__init__(**parameters)
