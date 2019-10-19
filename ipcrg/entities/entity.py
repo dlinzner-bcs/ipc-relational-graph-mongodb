@@ -1,4 +1,5 @@
 """Representation of an entity."""
+import copy
 from jsonschema import validate
 from ..knowledge_unit import KnowledgeUnit
 
@@ -20,10 +21,12 @@ ENTITY_SCHEMA = {
 class Entity(KnowledgeUnit):
     """Basic entity."""
 
-    def __init__(self, name, entity_type):
+    def __init__(self, name, entity_type, **kwargs):
         """Initialize the basic entity."""
         self.name = name
         self.entity_type = entity_type
-        parameters = {'name': self.name, 'entity_type': self.entity_type}
+        parameters = copy.deepcopy(kwargs)
+        parameters['name'] = self.name
+        parameters['entity_type'] = self.entity_type
         validate(parameters, schema=ENTITY_SCHEMA)
         super().__init__(parameters=parameters)
