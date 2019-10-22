@@ -1,0 +1,22 @@
+# NOTE: volumes are commented for the time being
+version: "3"
+services:
+  db-service:
+    image: mongo:latest
+    ports:
+        - 27017:27017
+    # volumes:
+    # - db-data-volume:/data/db
+  cos-service:
+    image: minio/minio:latest
+    ports:
+      - 9000:9000
+    # volumes:
+    #  - cos-data-volume:/data 
+    environment:
+      MINIO_ACCESS_KEY: access-key
+      MINIO_SECRET_KEY: secret-key
+    command: server /export
+# volumes:
+#   - db-data-volume:
+#   - cos-data-volume:
